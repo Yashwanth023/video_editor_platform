@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { addAudioTrack, updateAudioTrack, removeAudioTrack, selectAudioTrack } from '../store/audioSlice';

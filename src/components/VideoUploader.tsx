@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
@@ -68,14 +67,18 @@ const VideoUploader: React.FC = () => {
 
     // Simulate upload progress
     const intervalId = setInterval(() => {
-      dispatch(setUploadProgress((prev) => {
-        const newProgress = prev + 5;
+      dispatch((dispatch, getState) => {
+        const currentProgress = getState().video.uploadProgress;
+        const newProgress = currentProgress + 5;
+        
         if (newProgress >= 100) {
           clearInterval(intervalId);
-          return 100;
+          dispatch(setUploadProgress(100));
+          return;
         }
-        return newProgress;
-      }));
+        
+        dispatch(setUploadProgress(newProgress));
+      });
     }, 100);
 
     // Process the video

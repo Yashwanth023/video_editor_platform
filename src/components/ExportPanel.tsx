@@ -29,8 +29,10 @@ const ExportPanel: React.FC = () => {
       
       // Simulate rendering progress
       const intervalId = setInterval(() => {
-        dispatch(setRenderProgress((prev) => {
-          const newProgress = prev + 2;
+        dispatch((dispatch, getState) => {
+          const currentProgress = getState().project.renderProgress;
+          const newProgress = currentProgress + 2;
+          
           if (newProgress >= 100) {
             clearInterval(intervalId);
             
@@ -50,10 +52,11 @@ const ExportPanel: React.FC = () => {
               }, 1500);
             }, 500);
             
-            return 100;
+            dispatch(setRenderProgress(100));
+          } else {
+            dispatch(setRenderProgress(newProgress));
           }
-          return newProgress;
-        }));
+        });
       }, 200);
     }
   };

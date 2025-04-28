@@ -17,7 +17,7 @@ import { generateThumbnail, generateRandomId } from '../utils/fileUtils';
 import { toast } from '../hooks/use-toast';
 
 const VideoUploader: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { videoUrl, isUploading, uploadProgress } = useSelector((state: RootState) => state.video);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -67,18 +67,15 @@ const VideoUploader: React.FC = () => {
 
     // Simulate upload progress
     const intervalId = setInterval(() => {
-      dispatch((dispatch, getState) => {
-        const currentProgress = getState().video.uploadProgress;
+      dispatch(setUploadProgress(currentProgress => {
         const newProgress = currentProgress + 5;
         
         if (newProgress >= 100) {
           clearInterval(intervalId);
-          dispatch(setUploadProgress(100));
-          return;
+          return 100;
         }
-        
-        dispatch(setUploadProgress(newProgress));
-      });
+        return newProgress;
+      }));
     }, 100);
 
     // Process the video

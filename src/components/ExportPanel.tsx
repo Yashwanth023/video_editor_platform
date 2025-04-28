@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
+import { AppDispatch } from '../store/store';
 import { 
   setIsRendering, 
   setRenderProgress, 
@@ -17,7 +17,7 @@ import { Download } from 'lucide-react';
 import { toast } from '../hooks/use-toast';
 
 const ExportPanel: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { isRendering, renderProgress, isExporting, exportUrl } = useSelector((state: RootState) => state.project);
   const [exportFormat, setExportFormat] = useState('mp4');
   const [exportQuality, setExportQuality] = useState('high');
@@ -29,8 +29,7 @@ const ExportPanel: React.FC = () => {
       
       // Simulate rendering progress
       const intervalId = setInterval(() => {
-        dispatch((dispatch, getState) => {
-          const currentProgress = getState().project.renderProgress;
+        dispatch(setRenderProgress(currentProgress => {
           const newProgress = currentProgress + 2;
           
           if (newProgress >= 100) {
@@ -52,11 +51,10 @@ const ExportPanel: React.FC = () => {
               }, 1500);
             }, 500);
             
-            dispatch(setRenderProgress(100));
-          } else {
-            dispatch(setRenderProgress(newProgress));
+            return 100;
           }
-        });
+          return newProgress;
+        }));
       }, 200);
     }
   };

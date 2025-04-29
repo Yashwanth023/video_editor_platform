@@ -71,7 +71,7 @@ A modern, dark-themed video editor with a sleek interface designed for content c
 
 1. Clone the repository:
 ```sh
-git clone https://github.com/yourusername/ember-studio.git
+git clone https://github.com/Yashwanth023/ember-glow-quiz.git
 cd ember-studio
 ```
 

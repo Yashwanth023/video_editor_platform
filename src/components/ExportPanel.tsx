@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
@@ -29,7 +30,8 @@ const ExportPanel: React.FC = () => {
       
       // Simulate rendering progress
       const intervalId = setInterval(() => {
-        dispatch(setRenderProgress(currentProgress => {
+        dispatch((dispatch) => {
+          const currentProgress = renderProgress;
           const newProgress = currentProgress + 2;
           
           if (newProgress >= 100) {
@@ -51,10 +53,11 @@ const ExportPanel: React.FC = () => {
               }, 1500);
             }, 500);
             
-            return 100;
+            dispatch(setRenderProgress(100));
+          } else {
+            dispatch(setRenderProgress(newProgress));
           }
-          return newProgress;
-        }));
+        });
       }, 200);
     }
   };
